@@ -104,12 +104,12 @@ export async function downloadFlipt(version: string): Promise<void> {
     core.addPath(cachedPath);
     core.debug(`Successfully cached ${destination} to ${cachedPath}`);
 
-    const versionExec = await exec("flipt", ["--version"], true);
+    const versionExec = await exec("flipt", ["--version"], {silent: true});
     if (!versionExec.success) {
       throw new Error(`flipt failed to run: ${versionExec.stderr.trim()}`);
     }
 
-    core.info(`${versionExec.stdout.trim()} installed`);
+    core.info(`${versionExec.stdout.trim()}`);
   } catch (error) {
     throw new Error(`Failed to release: ${error}`);
   }

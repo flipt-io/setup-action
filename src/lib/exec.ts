@@ -13,7 +13,6 @@ export const exec = async (
   opts = {},
 ): Promise<ExecResult> => {
   const eopts: aexec.ExecOptions = {
-    silent: false,
     ignoreReturnCode: true,
     ...opts,
   };

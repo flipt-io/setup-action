@@ -117,11 +117,11 @@ function downloadFlipt(version) {
             const cachedPath = yield tc.cacheDir(destination, "flipt", version);
             core.addPath(cachedPath);
             core.debug(`Successfully cached ${destination} to ${cachedPath}`);
-            const versionExec = yield (0, exec_1.exec)("flipt", ["--version"], true);
+            const versionExec = yield (0, exec_1.exec)("flipt", ["--version"], { silent: true });
             if (!versionExec.success) {
                 throw new Error(`flipt failed to run: ${versionExec.stderr.trim()}`);
             }
-            core.info(`${versionExec.stdout.trim()} installed`);
+            core.info(`${versionExec.stdout.trim()}`);
         }
         catch (error) {
             throw new Error(`Failed to release: ${error}`);
@@ -213,7 +213,7 @@ exports.exec = void 0;
 const aexec = __importStar(__nccwpck_require__(1514));
 const core = __importStar(__nccwpck_require__(2186));
 const exec = (command, args = [], opts = {}) => __awaiter(void 0, void 0, void 0, function* () {
-    const eopts = Object.assign({ silent: false, ignoreReturnCode: true }, opts);
+    const eopts = Object.assign({ ignoreReturnCode: true }, opts);
     core.debug(`running ${command} ${args.join(' ')}, opts: ${JSON.stringify(eopts)}`);
     const { exitCode, stdout, stderr } = yield aexec.getExecOutput(command, args, eopts);
     return {
