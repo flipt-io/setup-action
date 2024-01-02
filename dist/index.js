@@ -72,16 +72,6 @@ function downloadFlipt(version) {
         if (!platform) {
             throw new Error("Unsupported platform");
         }
-        // check if flipt is already installed
-        // if not, download it
-        const isFliptInstalled = yield io.which("flipt");
-        // TODO: check if requested version is already installed
-        if (isFliptInstalled) {
-            core.info("flipt is already installed, skipping download");
-            return;
-        }
-        version = version.toLowerCase().trim();
-        core.info(`flipt is not installed, proceeding to downloading version: ${version}"`);
         let downloadUrl;
         try {
             if (version === "latest") {
