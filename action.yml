@@ -1,0 +1,18 @@
+name: "Flipt Setup Action"
+description: "Setup Flipt CLI"
+author: "Flipt Devs <dev@flipt.io>"
+inputs:
+  version:
+    description: "version of Flipt to install"
+    default: "latest"
+    required: false
+  args:
+    description: "additional arguments to pass to the command"
+    default: ""
+    required: false
+  working-directory:
+    description: "working directory, default is project root"
+    required: false
+runs:
+  using: "node16"
+  main: "dist/index.js"
