@@ -33,22 +33,6 @@ export async function downloadFlipt(version: string): Promise<void> {
     throw new Error("Unsupported platform");
   }
 
-  // check if flipt is already installed
-  // if not, download it
-  const isFliptInstalled = await io.which("flipt");
-
-  // TODO: check if requested version is already installed
-  if (isFliptInstalled) {
-    core.info("flipt is already installed, skipping download");
-    return;
-  }
-
-  version = version.toLowerCase().trim();
-
-  core.info(
-    `flipt is not installed, proceeding to downloading version: ${version}"`
-  );
-
   let downloadUrl: string | undefined;
 
   try {
