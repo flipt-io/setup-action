@@ -2,11 +2,13 @@
 
 ![GitHub Release](https://img.shields.io/github/v/release/flipt-io/setup-action)
 
-This action installs [Flipt](https://flipt.io) in your GitHub Actions workflow. You can pass additional arguments to the `flipt` command using the `args` input. If no arguments are provided, `flipt` will be installed and run with the `--help` flag.
+This action installs [Flipt](https://flipt.io) in your GitHub Actions workflow.
+
+You can pass additional arguments to the `flipt` command using the `args` input. If no arguments are provided, `flipt` will be installed and run with the `--help` flag.
 
 Any of the [Flipt CLI commands](https://www.flipt.io/docs/cli/overview) can be run using this action.
 
-## Example
+## Examples
 
 ### Validate
 
