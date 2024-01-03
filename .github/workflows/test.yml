@@ -28,7 +28,15 @@ jobs:
       - name: Test Install (Latest)
         uses: ./
 
-      - name: Test Install Version (v1.32.0)
+      - name: Test Install and Validate (Latest)
         uses: ./
         with:
-          version: v1.32.0
+          args: validate
+
+      - name: Test Install Version (v1.33.0)
+        uses: ./
+        with:
+          version: v1.33.0
+
+      - name: Validate After Install
+        run: flipt validate
