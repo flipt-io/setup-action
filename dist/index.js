@@ -292,8 +292,8 @@ function flipt(args = []) {
         let version = core.getInput('version');
         core.startGroup(`Installing flipt:${version}`);
         yield (0, cli_1.downloadFlipt)(version);
-        core.info('flipt installed successfully');
         core.endGroup();
+        core.info('flipt installed successfully');
         if (!args || args.length === 0) {
             core.info('flipt command not provided, skipping');
             return;
