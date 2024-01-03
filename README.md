@@ -22,7 +22,7 @@ validate:
   steps:
     - uses: actions/checkout@v3
 
-    - uses: flipt-io/setup-action@v0.0.1
+    - uses: flipt-io/setup-action@v0.1.0
       # with:
         # Optional, additional arguments to pass to the `flipt` command
         # args:
@@ -46,7 +46,7 @@ validate:
   steps:
     - uses: actions/checkout@v3
 
-    - uses: flipt-io/setup-action@v0.0.1
+    - uses: flipt-io/setup-action@v0.1.0
       # with:
         # Optional, additional arguments to pass to the `flipt` command
         # args:
