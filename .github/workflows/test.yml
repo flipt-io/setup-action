@@ -27,16 +27,20 @@ jobs:
 
       - name: Test Install (Latest)
         uses: ./
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test Install and Validate (Latest)
         uses: ./
         with:
           args: validate
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test Install Version (v1.33.0)
         uses: ./
         with:
           version: v1.33.0
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate After Install
         run: flipt validate
