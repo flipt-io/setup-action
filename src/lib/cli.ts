@@ -1,12 +1,12 @@
 import * as os from "os";
 import * as core from "@actions/core";
 import * as io from "@actions/io";
-import * as github from "@actions/github";
 import * as tc from "@actions/tool-cache";
 import { exec } from "./exec";
 import path from "path";
 import fetch from "node-fetch";
 import { Octokit } from "@octokit/rest";
+import { createActionAuth } from "@octokit/auth-action";
 
 function getPlatform(): string | undefined {
   const platforms = {
@@ -25,6 +25,7 @@ function getPlatform(): string | undefined {
 
 export async function downloadFlipt(version: string): Promise<void> {
   let octokit = new Octokit({
+    authStrategy: createActionAuth,
     request: { fetch: fetch },
   });
 
