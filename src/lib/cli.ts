@@ -13,7 +13,7 @@ function getPlatform(): string | undefined {
     "linux-x64": "linux_x86_64",
     // 'linux-arm64': 'linux_arm64',
     // 'darwin-x64': 'darwin-x64',
-    // 'darwin-arm64': 'darwin-arm64',
+    'darwin-arm64': 'darwin_arm64',
     // 'win32-x64': 'windows-x64'
   };
 
