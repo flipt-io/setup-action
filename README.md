@@ -22,8 +22,9 @@ validate:
   steps:
     - uses: actions/checkout@v3
 
-    - uses: flipt-io/setup-action@v0.1.0
-      # with:
+    - uses: flipt-io/setup-action@v0.2.0
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required to download flipt cli without rate limiting
         # Optional, additional arguments to pass to the `flipt` command
         # args:
         # Optional, the version of Flipt to install, defaults to the latest release
@@ -46,8 +47,9 @@ validate:
   steps:
     - uses: actions/checkout@v3
 
-    - uses: flipt-io/setup-action@v0.1.0
-      # with:
+    - uses: flipt-io/setup-action@v0.2.0
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required to download flipt cli without rate limiting
         # Optional, additional arguments to pass to the `flipt` command
         # args:
         # Optional, the version of Flipt to install, defaults to the latest release
@@ -78,6 +80,7 @@ Following inputs can be used as `step.with` keys
 | `working-directory` | string | **Optional**. The directory to validate, defaults to the repository root   |
 | `version`           | string | **Optional**. The version of Flipt to install, defaults to the latest release. |
 | `args`              | string | **Optional**. Additional arguments to pass to the `flipt` command |
+| `GITHUB_TOKEN`      | string | **Required**. The GitHub token to use to download Flipt CLI without rate limiting. |
 
 ## Development
 

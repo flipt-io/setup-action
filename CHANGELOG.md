@@ -1,7 +1,12 @@
 # Changelog
 
-## [0.1.1](https://github.com/flipt-io/setup-action/compare/v0.1.0...v0.1.1) (2024-10-29)
+## [0.2.0](https://github.com/flipt-io/setup-action/compare/v0.1.0...v0.2.0) (2024-10-29)
 
+### Features
+
+* add github token support to download flipt cli
+
+## [0.1.1](https://github.com/flipt-io/setup-action/compare/v0.1.0...v0.1.1) (2024-10-29)
 
 ### Features
 
