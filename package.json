@@ -1,6 +1,6 @@
 {
   "name": "setup-flipt-action",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Install Flipt CLI",
   "main": "lib/main.js",

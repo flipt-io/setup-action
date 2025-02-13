@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0](https://github.com/flipt-io/setup-action/compare/v0.2.0...v0.3.0) (2025-02-13)
+
+### Features
+
+* support darwin-x64 and linux-arm64 ([#11](https://github.com/flipt-io/setup-action/issues/11)) ([1bbf22b](https://github.com/flipt-io/setup-action/commit/1bbf22b7613c333454465e12cb730242d892122d))
+
 ## [0.2.0](https://github.com/flipt-io/setup-action/compare/v0.1.1...v0.2.0) (2024-10-29)
 
 ### Features
