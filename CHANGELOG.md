@@ -2,7 +2,6 @@
 
 ## [0.3.1](https://github.com/flipt-io/setup-action/compare/v0.3.0...v0.3.1) (2025-02-13)
 
-
 ### Bug Fixes
 
 * download url for darwin_x86_64 ([#21](https://github.com/flipt-io/setup-action/issues/21)) ([aed9c73](https://github.com/flipt-io/setup-action/commit/aed9c73b39211c32679600bc31217eec3683aa83))

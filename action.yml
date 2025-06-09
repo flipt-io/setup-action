@@ -13,6 +13,9 @@ inputs:
   working-directory:
     description: "working directory, default is project root"
     required: false
+  GITHUB_TOKEN:
+    description: "GitHub token"
+    required: true
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/index.js"
