@@ -109,7 +109,7 @@ bundle:
     # Build the bundle and push it to an ephemeral registry (available for 1 hour)
     - name: Build and Push bundle
       run: |
-        flipt bundle build ${{ steps.uuid.outputs.uuid }}:latest
+        flipt bundle build -t ttl.sh/${{ steps.uuid.outputs.uuid }}:1h
         flipt bundle push ttl.sh/${{ steps.uuid.outputs.uuid }}:1h
 ```
 
