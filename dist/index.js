@@ -64,6 +64,53 @@ function getPlatform() {
     const runnerArch = os.arch();
     return platforms[`${runnerPlatform}-${runnerArch}`];
 }
+function resolveVersion(version, octokit) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Handle specific version tags (e.g., v1.47.0, v2.0.0)
+        if (version.match(/^v\d+\.\d+\.\d+/)) {
+            return { tag: version, isLatest: false };
+        }
+        // Handle version resolution patterns
+        switch (version) {
+            case "latest":
+            case "v1":
+            case "latest-v1":
+                return yield getLatestVersionByMajor(1, octokit);
+            case "v2":
+            case "latest-v2":
+                return yield getLatestVersionByMajor(2, octokit);
+            default:
+                // Fallback to existing behavior for unknown patterns
+                return { tag: version, isLatest: false };
+        }
+    });
+}
+function getLatestVersionByMajor(majorVersion, octokit) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // List all releases to filter by major version
+            const releases = yield octokit.rest.repos.listReleases({
+                owner: "flipt-io",
+                repo: "flipt",
+                per_page: 100 // Get more releases to ensure we find the latest
+            });
+            // Filter releases by major version and find the latest
+            const filteredReleases = releases.data
+                .filter(release => !release.prerelease && !release.draft) // Exclude prereleases and drafts
+                .filter(release => release.tag_name.startsWith(`v${majorVersion}.`))
+                .sort((a, b) => new Date(b.published_at || b.created_at).getTime() - new Date(a.published_at || a.created_at).getTime());
+            if (filteredReleases.length === 0) {
+                throw new Error(`No stable releases found for v${majorVersion}.x`);
+            }
+            const latestRelease = filteredReleases[0];
+            core.debug(`Latest v${majorVersion} release is ${latestRelease.tag_name}`);
+            return { tag: latestRelease.tag_name, isLatest: true };
+        }
+        catch (error) {
+            throw new Error(`Failed to find latest v${majorVersion} release: ${error}`);
+        }
+    });
+}
 function downloadFlipt(version) {
     return __awaiter(this, void 0, void 0, function* () {
         let octokit = new rest_1.Octokit({
@@ -76,31 +123,36 @@ function downloadFlipt(version) {
         }
         let downloadUrl;
         try {
-            if (version === "latest") {
-                const release = yield octokit.rest.repos.getLatestRelease({
+            // Resolve the version pattern to an actual release tag
+            const resolvedVersion = yield resolveVersion(version, octokit);
+            const releaseTag = resolvedVersion.tag;
+            core.debug(`Resolved version '${version}' to release tag '${releaseTag}'`);
+            let release;
+            if (resolvedVersion.isLatest) {
+                // For latest resolutions, we already have the release info from getLatestVersionByMajor
+                // But we still need to get the full release data for assets
+                release = yield octokit.rest.repos.getReleaseByTag({
                     owner: "flipt-io",
                     repo: "flipt",
+                    tag: releaseTag,
                 });
-                const version = release.data.tag_name;
-                core.debug(`Latest flipt release is ${version}`);
-                const asset = release.data.assets.find((asset) => asset.name === `flipt_${platform}.tar.gz`);
-                downloadUrl = asset === null || asset === void 0 ? void 0 : asset.browser_download_url;
             }
             else {
-                const release = yield octokit.rest.repos.getReleaseByTag({
+                // For specific versions, get the release by tag
+                release = yield octokit.rest.repos.getReleaseByTag({
                     owner: "flipt-io",
                     repo: "flipt",
-                    tag: version,
+                    tag: releaseTag,
                 });
-                if (!release) {
-                    throw new Error(`No release found for tag ${version}`);
-                }
-                core.debug(`Found flipt release ${version}`);
-                const asset = release.data.assets.find((asset) => asset.name === `flipt_${platform}.tar.gz`);
-                downloadUrl = asset === null || asset === void 0 ? void 0 : asset.browser_download_url;
             }
+            if (!release) {
+                throw new Error(`No release found for tag ${releaseTag}`);
+            }
+            core.debug(`Using flipt release ${releaseTag}`);
+            const asset = release.data.assets.find((asset) => asset.name === `flipt_${platform}.tar.gz`);
+            downloadUrl = asset === null || asset === void 0 ? void 0 : asset.browser_download_url;
             if (!downloadUrl) {
-                throw new Error(`No download url found for ${platform}: version ${version}`);
+                throw new Error(`No download url found for ${platform}: version ${releaseTag}`);
             }
             core.debug(`Downloading from ${downloadUrl}`);
             const destination = path_1.default.join(os.homedir(), ".flipt/flipt");
@@ -112,11 +164,11 @@ function downloadFlipt(version) {
                 core.debug(`Successfully deleted pre-existing ${destination} directory (if any)}`);
             });
             const downloaded = yield tc.downloadTool(downloadUrl);
-            core.debug(`Successfully downloaded 'flipt-${version}' to ${downloaded}`);
+            core.debug(`Successfully downloaded 'flipt-${releaseTag}' to ${downloaded}`);
             yield io.mkdirP(destination);
             const extractedPath = yield tc.extractTar(downloaded, destination);
             core.debug(`Successfully extracted ${downloaded} to ${extractedPath}`);
-            const cachedPath = yield tc.cacheDir(destination, "flipt", version);
+            const cachedPath = yield tc.cacheDir(destination, "flipt", releaseTag);
             core.addPath(cachedPath);
             core.debug(`Successfully cached ${destination} to ${cachedPath}`);
             const versionExec = yield (0, exec_1.exec)("flipt", ["--version"], { silent: true });
