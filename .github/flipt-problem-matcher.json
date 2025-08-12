@@ -1,0 +1,16 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "flipt-validate",
+      "severity": "error",
+      "pattern": [
+        {
+          "regexp": "\\{\"message\":\"([^\"]*(?:\\\\.[^\"]*)*)\",\"location\":\\{\"file\":\"([^\"]+)\",\"line\":(\\d+)\\}\\}",
+          "message": 1,
+          "file": 2,
+          "line": 3
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,16 @@ You can pass additional arguments to the `flipt` command using the `args` input.
 
 Both Flipt v1 and v2 CLI commands can be run using this action. The version you install determines which commands are available.
 
+## Problem Matchers
+
+When running `flipt validate`, this action automatically registers a **problem matcher** that creates GitHub annotations for validation errors directly on your PR files. This provides immediate feedback on configuration issues without having to dig through CI logs.
+
+**Features:**
+- **Inline annotations** on files with validation errors
+- **Precise line numbers** showing exactly where issues occur  
+- **Automatic activation** when using `validate` commands
+- **JSON parsing** for structured error information
+
 ## Supported Platforms
 
 - Linux x86_64
@@ -79,6 +89,8 @@ validate:
 
     - run: flipt validate
 ```
+
+> **💡 Pro Tip:** Problem matchers are automatically enabled! When validation errors occur, you'll see annotations directly on the affected lines in your PR.
 
 ### OCI Bundle and Push (v1)
 
@@ -162,6 +174,8 @@ validate-v2:
 
     - run: flipt validate
 ```
+
+> **💡 Pro Tip:** Problem matchers are automatically enabled for validation! Any validation errors will appear as annotations on your PR files.
 
 ### Working with Git Storage (v2)
 
