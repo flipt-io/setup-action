@@ -8,7 +8,8 @@ on:
       - 'releases/*'
 
 jobs:
-  test:
+  # Build job that other jobs depend on
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,21 +26,95 @@ jobs:
           npm run build
           npm run package
 
-      - name: Test Install (Latest)
+      # Upload the action as an artifact for other jobs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: action
+          path: |
+            dist/
+            action.yml
+
+  # Test version installations with matrix
+  test-versions:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test-case:
+          - version: 'latest'
+            expected-major: 'v1'
+            description: 'Latest (backward compatible - should install v1)'
+          - version: 'v1'
+            expected-major: 'v1'
+            description: 'v1 (latest v1.x)'
+          - version: 'latest-v1'
+            expected-major: 'v1'
+            description: 'latest-v1 (explicit v1 latest)'
+          - version: 'v2'
+            expected-major: 'v2'
+            description: 'v2 (latest v2.x)'
+          - version: 'latest-v2'
+            expected-major: 'v2'
+            description: 'latest-v2 (explicit v2 latest)'
+          - version: 'v1.58.0'
+            expected-major: 'v1'
+            description: 'Specific v1 version'
+          - version: 'v2.0.0'
+            expected-major: 'v2'
+            description: 'Specific v2 version'
+    steps:
+      - uses: actions/checkout@v4
+
+      # Download the built action
+      - uses: actions/download-artifact@v4
+        with:
+          name: action
+          path: .
+
+      - name: Test Install - ${{ matrix.test-case.description }}
         uses: ./
         with:
+          version: ${{ matrix.test-case.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check Version Output
+        run: |
+          echo "Testing: ${{ matrix.test-case.description }}"
+          echo "Requested version: ${{ matrix.test-case.version }}"
+          echo "Expected major version: ${{ matrix.test-case.expected-major }}"
+
+          VERSION_OUTPUT=$(flipt --version)
+          echo "Installed version: $VERSION_OUTPUT"
+
+          # Extract just the version number (e.g., "v1.58.0" or "v2.0.0")
+          VERSION=$(echo "$VERSION_OUTPUT" | grep -o 'v[0-9]\+\.[0-9]\+\.[0-9]\+')
+          echo "Extracted version: $VERSION"
+
+          # Check if the major version matches expectations
+          if [[ "$VERSION" == "${{ matrix.test-case.expected-major }}"* ]]; then
+            echo "✅ Version check passed: $VERSION starts with ${{ matrix.test-case.expected-major }}"
+          else
+            echo "❌ Version check failed: Expected ${{ matrix.test-case.expected-major }}.x, got $VERSION"
+            exit 1
+          fi
+
+  # Test flipt validate command
+  test-validate:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Download the built action
+      - uses: actions/download-artifact@v4
+        with:
+          name: action
+          path: .
 
       - name: Test Install and Validate (Latest)
         uses: ./
         with:
           args: validate
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Test Install Version (v1.58.0)
-        uses: ./
-        with:
-          version: v1.58.0
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate After Install
