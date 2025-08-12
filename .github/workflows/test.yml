@@ -41,27 +41,33 @@ jobs:
     strategy:
       matrix:
         test-case:
-          - version: 'latest'
+          - description: 'Latest (v1)'
+            version: 'latest'
             expected-major: 'v1'
-            description: 'Latest (backward compatible - should install v1)'
-          - version: 'v1'
+
+          - description: 'v1 (latest v1.x)'
+            version: 'v1'
             expected-major: 'v1'
-            description: 'v1 (latest v1.x)'
-          - version: 'latest-v1'
+
+          - description: 'latest-v1 (explicit v1 latest)'
+            version: 'latest-v1'
             expected-major: 'v1'
-            description: 'latest-v1 (explicit v1 latest)'
-          - version: 'v2'
+
+          - description: 'v2 (latest v2.x)'
+            version: 'v2'
             expected-major: 'v2'
-            description: 'v2 (latest v2.x)'
-          - version: 'latest-v2'
+
+          - description: 'latest-v2 (explicit v2 latest)'
+            version: 'latest-v2'
             expected-major: 'v2'
-            description: 'latest-v2 (explicit v2 latest)'
-          - version: 'v1.58.0'
+
+          - description: 'Specific v1 version'
+            version: 'v1.58.0'
             expected-major: 'v1'
-            description: 'Specific v1 version'
-          - version: 'v2.0.0'
+
+          - description: 'Specific v2 version'
+            version: 'v2.0.0'
             expected-major: 'v2'
-            description: 'Specific v2 version'
     steps:
       - uses: actions/checkout@v4
 
