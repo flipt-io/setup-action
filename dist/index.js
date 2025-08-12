@@ -320,6 +320,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
+const path = __importStar(__nccwpck_require__(1017));
 const cli_1 = __nccwpck_require__(7751);
 const environment_1 = __nccwpck_require__(8038);
 const exec_1 = __nccwpck_require__(1608);
@@ -352,17 +353,44 @@ function flipt(args = []) {
             core.info('flipt command not provided, skipping');
             return;
         }
+        // Check if this is a validate command and register problem matcher
+        const isValidateCommand = args.includes('validate');
+        if (isValidateCommand) {
+            yield registerFliptProblemMatcher();
+            // Auto-append --format json if not already present
+            if (!args.includes('--format') && !args.includes('-F')) {
+                args.push('--format', 'json');
+                core.debug('Auto-appended --format json to validate command for problem matcher parsing');
+            }
+        }
         let workspace = core.getInput('working-directory');
         if (!workspace || workspace.length === 0) {
             workspace = environment_1.environmentVariables.GITHUB_WORKSPACE;
         }
         core.debug(`running flipt in workspace: ${workspace}`);
         core.startGroup('Running flipt');
-        const result = yield (0, exec_1.exec)('flipt', [...args]);
+        const result = yield (0, exec_1.exec)('flipt', [...args], {
+            cwd: workspace
+        });
         core.endGroup();
         if (!result.success) {
             core.setFailed(`flipt command failed: ${result.stderr}`);
             return;
+        }
+    });
+}
+function registerFliptProblemMatcher() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // The problem matcher file is located relative to the action root
+            const matcherPath = path.join(__dirname, '..', '.github', 'flipt-problem-matcher.json');
+            core.debug(`Registering problem matcher from: ${matcherPath}`);
+            // Register the problem matcher
+            console.log(`::add-matcher::${matcherPath}`);
+            core.info('Registered Flipt problem matcher for validation errors');
+        }
+        catch (error) {
+            core.warning(`Failed to register Flipt problem matcher: ${error}`);
         }
     });
 }

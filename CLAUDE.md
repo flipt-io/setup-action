@@ -33,6 +33,7 @@ This is a GitHub Action for installing the Flipt CLI. The codebase follows a sta
    - Parses action inputs (version, args, working-directory, GITHUB_TOKEN)
    - Orchestrates Flipt CLI download and execution
    - Handles error reporting to GitHub Actions
+   - Registers problem matchers for validate commands
 
 2. **CLI Downloader**: `src/lib/cli.ts`
    - Downloads platform-specific Flipt binaries from GitHub releases
@@ -80,6 +81,21 @@ The action supports both Flipt v1 and v2 with intelligent version resolution:
 - `getLatestVersionByMajor()` filters GitHub releases by major version prefix
 - Maintains backward compatibility by defaulting `latest` to v1
 - Supports both database-backed (v1) and Git-native (v2) Flipt variants
+
+### Problem Matchers
+
+The action includes automatic problem matcher registration for `flipt validate` commands:
+
+- **File**: `.github/flipt-problem-matcher.json` - JSON configuration for parsing validation errors
+- **Auto-registration**: When `validate` command is detected, problem matcher is automatically registered
+- **JSON format**: Automatically appends `--format json` to validate commands for structured error parsing
+- **Annotations**: Creates inline GitHub annotations on PR files when validation errors occur
+
+**Implementation Details:**
+- `registerFliptProblemMatcher()` function in `src/main.ts` handles registration
+- Uses `::add-matcher::` GitHub Actions command to register the matcher
+- Regex pattern matches JSON error objects: `{"message":"...","location":{"file":"...","line":...}}`
+- Only activates for commands containing `validate` argument
 
 ## Important Notes
 
