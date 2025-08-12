@@ -1,7 +1,13 @@
 # Changelog
 
-## [0.3.1](https://github.com/flipt-io/setup-action/compare/v0.3.0...v0.3.1) (2025-02-13)
+## [0.4.0](https://github.com/flipt-io/setup-action/compare/v0.3.1...v0.4.0) (2025-06-09)
 
+
+### Miscellaneous Chores
+
+* release 0.4.0 ([f6cc0cb](https://github.com/flipt-io/setup-action/commit/f6cc0cbc006ccd33ac4a413330a4b979124637a0))
+
+## [0.3.1](https://github.com/flipt-io/setup-action/compare/v0.3.0...v0.3.1) (2025-02-13)
 
 ### Bug Fixes
 
