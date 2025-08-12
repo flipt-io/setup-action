@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/flipt-io/setup-action/compare/v0.4.0...v0.4.1) (2025-08-12)
+
+
+### Features
+
+* update to work with v2 ([#31](https://github.com/flipt-io/setup-action/issues/31)) ([0990f41](https://github.com/flipt-io/setup-action/commit/0990f410420bd11298ee776f52d4e6e69fef88a3))
+
 ## [0.4.0](https://github.com/flipt-io/setup-action/compare/v0.3.1...v0.4.0) (2025-06-09)
 
 
