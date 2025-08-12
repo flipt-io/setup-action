@@ -214,12 +214,12 @@ For more detailed information:
 
 The following inputs can be used as `step.with` keys
 
-| Name                | Type   | Description                                                                        |
-| ------------------- | ------ | ---------------------------------------------------------------------------------- |
-| `working-directory` | string | **Optional**. The directory to validate, defaults to the repository root           |
-| `version`           | string | **Optional**. The version of Flipt to install, defaults to the latest (v1) release.     |
-| `args`              | string | **Optional**. Additional arguments to pass to the `flipt` command                  |
-| `GITHUB_TOKEN`      | string | **Required**. The GitHub token to use to download Flipt CLI without rate limiting. |
+| Name                | Type   | Description                                                                         |
+| ------------------- | ------ | ----------------------------------------------------------------------------------- |
+| `working-directory` | string | **Optional**. The directory to validate, defaults to the repository root            |
+| `version`           | string | **Optional**. The version of Flipt to install, defaults to the latest (v1) release. |
+| `args`              | string | **Optional**. Additional arguments to pass to the `flipt` command                   |
+| `GITHUB_TOKEN`      | string | **Required**. The GitHub token to use to download Flipt CLI without rate limiting.  |
 
 ## Development
 
