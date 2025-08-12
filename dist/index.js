@@ -97,7 +97,7 @@ function getLatestVersionByMajor(majorVersion, octokit) {
             // Filter releases by major version and find the latest
             const filteredReleases = releases.data
                 .filter(release => !release.prerelease && !release.draft) // Exclude prereleases and drafts
-                .filter(release => release.tag_name.startsWith(`v${majorVersion}.`))
+                .filter(release => new RegExp(`^v${majorVersion}\\.\\d+\\.\\d+$`).test(release.tag_name))
                 .sort((a, b) => new Date(b.published_at || b.created_at).getTime() - new Date(a.published_at || a.created_at).getTime());
             if (filteredReleases.length === 0) {
                 throw new Error(`No stable releases found for v${majorVersion}.x`);
