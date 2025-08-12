@@ -20,7 +20,7 @@ Both Flipt v1 and v2 CLI commands can be run using this action. The version you 
 This action supports both Flipt v1 and v2. Choose your version based on your needs:
 
 - **Flipt v1**: Traditional database-backed feature flag management
-  - Docs: <https://www.flipt.io/docs>
+  - Docs: <https://docs.flipt.io/>
 - **Flipt v2**: Git-native feature flag management with declarative APIs
   - Docs: <https://docs.flipt.io/v2>
 
@@ -181,10 +181,6 @@ git-workflow-v2:
     # Validate flag configurations in your Git repository
     - name: Validate flags
       run: flipt validate
-
-    # Work with Git-stored flags directly
-    - name: Show flipt config
-      run: flipt config
 ```
 
 ## Key Differences Between v1 and v2
@@ -208,7 +204,7 @@ git-workflow-v2:
 
 For more detailed information:
 
-- [Flipt v1 Documentation](https://www.flipt.io/docs)
+- [Flipt v1 Documentation](https://docs.flipt.io/)
 - [Flipt v2 Documentation](https://docs.flipt.io/v2)
 - [v2 Introduction and Differences](https://docs.flipt.io/v2/introduction)
 
@@ -216,19 +212,19 @@ For more detailed information:
 
 ### inputs
 
-Following inputs can be used as `step.with` keys
+The following inputs can be used as `step.with` keys
 
-| Name                | Type   | Description                                                                        |
-| ------------------- | ------ | ---------------------------------------------------------------------------------- |
-| `working-directory` | string | **Optional**. The directory to validate, defaults to the repository root           |
-| `version`           | string | **Optional**. The version of Flipt to install, defaults to the latest release.     |
-| `args`              | string | **Optional**. Additional arguments to pass to the `flipt` command                  |
-| `GITHUB_TOKEN`      | string | **Required**. The GitHub token to use to download Flipt CLI without rate limiting. |
+| Name                | Type   | Description                                                                         |
+| ------------------- | ------ | ----------------------------------------------------------------------------------- |
+| `working-directory` | string | **Optional**. The directory to validate, defaults to the repository root            |
+| `version`           | string | **Optional**. The version of Flipt to install, defaults to the latest (v1) release. |
+| `args`              | string | **Optional**. Additional arguments to pass to the `flipt` command                   |
+| `GITHUB_TOKEN`      | string | **Required**. The GitHub token to use to download Flipt CLI without rate limiting.  |
 
 ## Development
 
 ```console
-# Builds the typescript code.
+# Builds the TypeScript code.
 npm run build
 
 # Runs eslint.
