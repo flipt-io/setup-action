@@ -27,7 +27,7 @@ jobs:
           npm run package
 
       # Upload the action as an artifact for other jobs
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: action
           path: |
