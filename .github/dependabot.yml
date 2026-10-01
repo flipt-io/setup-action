@@ -1,29 +1,37 @@
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: weekly
+      interval: 'weekly'
     open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'javascript'
+      # kodiak `merge.automerge_label`
+      - 'automerge'
     ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
-    labels:
-      - "dependencies"
-      - "javascript"
-      # kodiak `merge.automerge_label`
-      - "automerge"
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+    groups:
+      npm-security:
+        applies-to: security-updates
+        patterns: ['*']
+      npm-minor-patch:
+        applies-to: version-updates
+        patterns: ['*']
+        update-types: ['minor', 'patch']
 
-  - package-ecosystem: "github-actions"
-    # Workflow files stored in the
-    # default location of `.github/workflows`
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: weekly
+      interval: 'weekly'
     open-pull-requests-limit: 5
     labels:
-      - "dependencies"
-      - "github_actions"
+      - 'dependencies'
+      - 'github_actions'
       # kodiak `merge.automerge_label`
-      - "automerge"
+      - 'automerge'
+    groups:
+      github-actions:
+        patterns: ['*']
